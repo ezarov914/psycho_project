@@ -1,0 +1,21 @@
+{% extends 'base_page.html' %}
+{% block title %}Выбор темы теста | MindGrow{% endblock %}
+
+{% block content %}
+<div class="ml-64 pt-20 px-6 bg-gradient-to-br from-pink-100 to-indigo-100 min-h-screen">
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-md">
+    <h1 class="text-3xl font-bold mb-8 text-indigo-700 text-center">🧠 Выбери тему теста</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% for theme in themes %}
+      <form method="get" action="{{ url_for('tests.start_test', theme_id=theme.id) }}">
+        <button class="w-full bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-semibold p-6 rounded-xl text-left shadow-md transition">
+          <h2 class="text-xl mb-2">{{ theme.title }}</h2>
+          <p class="text-sm text-gray-600">{{ theme.description }}</p>
+        </button>
+      </form>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

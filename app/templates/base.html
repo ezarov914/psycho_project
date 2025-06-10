@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+</head>
+<body>
+    <header class="header h-16 fixed top-0 left-0 right-0 bg-white z-50 flex items-center justify-between px-6 shadow-md">
+      <div class="logo text-xl font-bold">🧠 MindGrow</div>
+      <nav class="space-x-6">
+          <a href="{{ url_for('main.index') }}">Главная</a>
+          <a href="{{ url_for('courses.course', course_id=1) }}">Сюжет</a>
+          <a href="{{ url_for('courses.basic_courses') }}">Курсы</a>
+          <a href="{{ url_for('tests.choose_theme') }}">Тесты</a>
+
+          {% if session.user %}
+            <a href="{{ url_for('profile.profile') }}">Профиль</a>
+          {% else %}
+            <a href="{{ url_for('auth.login') }}" class="font-semibold text-indigo-600 hover:underline">Войти</a>
+          {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        <!-- Профиль слева -->
+
+        <div class="pt-20"></div>
+        {% block cont %}{% endblock %}
+
+    </main>
+</body>
+</html>

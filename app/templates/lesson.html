@@ -1,0 +1,85 @@
+{% extends 'base_page.html' %}
+{% block title %}{{ lesson.title }} | MindGrow{% endblock %}
+
+{% block content %}
+<div class="ml-64 pt-20 px-6 min-h-screen bg-white text-gray-800">
+  <!-- Назад к главе -->
+
+
+  <h1 class="text-3xl font-bold mb-4">{{ lesson.title }}</h1>
+  <div class="flex space-x-2 items-center justify-center mb-6">
+    {% for l in course_lessons %}
+      <div class="w-4 h-4 rounded-full
+                  {% if l.id == current_lesson.id %}bg-indigo-500
+                  {% elif l.id < current_lesson.id %}bg-green-400
+                  {% else %}bg-gray-300
+                  {% endif %}"
+           title="{{ l.title }}"></div>
+    {% endfor %}
+  </div>
+  <!-- Контент урока -->
+  <div class="prose max-w-3xl">
+    {% for page in lesson_pages %}
+      {% if page.type == 'text' %}
+        <p>{{ page.content }}</p>
+      {% elif page.type == 'image' %}
+        <img src="{{ url_for('static', filename=page.content) }}" alt="Изображение" class="rounded-xl shadow-md mt-6">
+      {% elif page.type == 'youtube' %}
+        <div class="w-full mt-6">
+          <div class="relative" style="padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 1rem; box-shadow: 0 0 20px rgba(0,0,0,0.1);">
+            <iframe
+              src="https://www.youtube.com/embed/{{ page.content | replace('https://www.youtube.com/watch?v=', '') }}"
+              title="YouTube video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowfullscreen
+              class="absolute top-0 left-0 w-full h-full">
+            </iframe>
+          </div>
+        </div>
+      {% elif page.type == 'qa' %}
+        {% set qa_item = questions[page.lesson_page] %}
+        <div class="mt-4 p-4 border border-gray-300 rounded">
+          <strong>Вопрос:</strong> {{ qa_item.question }}<br>
+          <strong>Ответ:</strong> {{ qa_item.answer }}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Навигация между уроками -->
+  <div class="flex justify-between items-center mt-12">
+<!--  {% if prev_lesson %}-->
+<!--    <a href="{{ url_for('lesson', lesson_id=prev_lesson.id) }}"-->
+<!--       class="text-indigo-500 hover:underline font-semibold">-->
+<!--      ← {{ prev_lesson.title }}-->
+<!--    </a>-->
+<!--  {% else %}-->
+<!--    <span></span>-->
+<!--  {% endif %}-->
+
+<!--  <a href="{{ url_for('course', course_id=lesson.course_id) }}"-->
+<!--   class="inline-block mb-6 text-indigo-500 hover:underline text-sm">-->
+<!--  ← Назад к главе {{ lesson.course_id }}-->
+<!--  </a>-->
+
+  {% if prev_lesson %}
+  <a href="{{ url_for('courses.lesson', lesson_id=prev_lesson.id) }}"
+     class="text-indigo-500 hover:underline font-semibold">
+    {{ prev_lesson.title }} ← Вернуться к предыдущему уроку
+  </a>
+  {% endif %}
+  {% if next_lesson %}
+    <a href="{{ url_for('courses.lesson', lesson_id=next_lesson.id) }}"
+       class="text-indigo-500 hover:underline font-semibold">
+      {{ next_lesson.title }} Перейти к следующему уроку →
+    </a>
+  {% else %}
+    <a href="{{ url_for('courses.course', course_id=1) }}"
+       class="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition">
+      ← Вернуться к курсам
+    </a>
+  {% endif %}
+</div>
+</div>
+{% endblock %}

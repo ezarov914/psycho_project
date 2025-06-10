@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+
+{% block cont %}
+    <aside class="fixed top-16 left-0 h-[calc(100vh-4rem)] w-80 bg-white shadow-lg p-6 z-40 flex flex-col justify-between">
+      <!-- Верх: профиль -->
+      <div class="flex flex-col items-center text-center overflow-y-auto max-h-[460px] pr-2">
+          <div class="bg-gray-900 text-blue-100 rounded-xl p-4 w-full shadow-lg">
+              <h2 class="text-lg font-bold tracking-wide mb-3">🧠 PSYCHOPASSPORT</h2>
+
+              <div class="flex flex-col items-center mb-4">
+                <img src="{{ url_for('static', filename=(user_profile.avatar if user_profile.avatar else 'content/base_avatar.jpg')) }}"
+                     alt="avatar" class="w-24 h-24 rounded-full border-2 border-blue-400 mb-2">
+                <h3 class="text-xl font-semibold">{{ user_profile.name }}</h3>
+                <p class="text-sm text-gray-400">{{ user_profile.email }}</p>
+              </div>
+
+              <div class="text-sm space-y-1 mb-4">
+                <p><strong>Type:</strong> Mediator</p>
+                <p><strong>Rank:</strong> C</p>
+                <p><strong>Level:</strong> 12</p>
+              </div>
+
+              <div class="space-y-2 text-sm">
+                <p>🧠 Analytical</p>
+                <div class="bg-gray-700 h-2 rounded"><div class="bg-blue-400 h-2 rounded" style="width: 62%"></div></div>
+                <p>💓 Empathy</p>
+                <div class="bg-gray-700 h-2 rounded"><div class="bg-blue-400 h-2 rounded" style="width: 75%"></div></div>
+                <p>🛡️ Resilience</p>
+                <div class="bg-gray-700 h-2 rounded"><div class="bg-blue-400 h-2 rounded" style="width: 40%"></div></div>
+              </div>
+
+              <div class="mt-4 text-sm">
+                <p><strong>Dominant Emotion:</strong></p>
+                <div class="flex justify-between items-center text-xs mt-1">
+                  <span>Logic</span>
+                  <span class="text-blue-300">•</span>
+                  <span>Instinct</span>
+                </div>
+                <div class="flex justify-around text-base mt-2">
+                  <span>🙂</span>
+                  <span>😠</span>
+                  <span>😢</span>
+                </div>
+              </div>
+
+              <div class="mt-4 text-center">
+                <p class="text-xs text-gray-400 uppercase">Active Quest</p>
+                <p class="font-semibold text-indigo-300">Self-Acceptance</p>
+              </div>
+            </div>
+          {% if user_profile %}
+          <button class="mt-6 bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition">
+            Редактировать профиль
+          </button>
+          {% endif %}
+        </div>
+
+      <!-- Низ: кнопки -->
+      <nav class="flex flex-col items-center gap-3 mt-8">
+        {% if session.user %}
+          <span class="text-sm">👤 {{ session.user.name }}</span>
+          {% if session.user.email == 'admin@gmail.com' %}
+              <a href="{{ url_for('editor.admin') }}"
+                 class="bg-yellow-500 text-white px-4 py-2 rounded-full hover:bg-yellow-600 transition w-full text-center">
+                🛠 Админ-панель
+              </a>
+              <a href="{{ url_for('editor.editor') }}"
+                 class="bg-orange-500 text-white px-4 py-2 rounded-full hover:bg-yellow-600 transition w-full text-center">
+                🛠 Меню редактора
+              </a>
+            {% endif %}
+          <a href="{{ url_for('auth.logout') }}" class="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition w-full text-center">
+            Выйти
+          </a>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" class="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition w-full text-center">
+            Войти
+          </a>
+          <a href="{{ url_for('auth.register') }}" class="bg-indigo-500 text-white px-4 py-2 rounded-full hover:bg-indigo-600 transition w-full text-center">
+            Регистрация
+          </a>
+        {% endif %}
+      </nav>
+    </aside>
+
+
+{% block content %}
+{% endblock %}
+{% endblock %}
